@@ -1,0 +1,85 @@
+
+def criaMatriz():
+    mat = [ [1,2,3],[4,5,6],[7,8,9] ]
+    return mat
+#final da rotina
+
+def apresentaMatriz(mat):
+    print(mat[0][0],"|", mat[0][1],"|", mat[0][2])
+    print("-" *10)
+    print(mat[1][0],"|", mat[1][1],"|", mat[1][2])
+    print("-" *10)
+    print(mat[2][0],"|", mat[2][1],"|", mat[2][2])
+#final da rotina
+
+def posicaoOcupada (matriz, posicao):
+    # verificar posição escolhida 
+    for linha in matriz:
+        if posicao in linha:
+            return False
+    return True
+
+def registraJogada(mat, posicao, jogador):
+    # insere a marcação do jogador na posição informada.
+    for i in range(3):
+        for j in range(3):
+            if mat[i][j] == posicao:
+                mat[i][j] = jogador
+                return mat
+def trocaJogador(jogador):
+    #alternar o jogador atual.
+    return "O" if jogador == "X" else "X"
+
+def verificaGanhador(mat, Jogador):
+    # verificar se o jogador atual venceu a partida.
+    # verificar linhas, colunas e diagonais.
+    for i in range(3):
+        if mat[i][0] == mat [i][1] == mat[i][2] == jogador: # verifica linhas
+            return True
+        if mat [0][i] == mat[1][i] == mat[2][i] == jogador: # Verificar colunas
+            return True
+    if mat[0][0] == mat [1][1] == mat[2][2] == jogador: # Diagonal principal
+        return True
+    if mat [0][2] == mat [1][1] == mat [2][0]== jogador: # Diagonal secundaria
+        return True
+    return False
+
+# Programa principal
+print("****JOGO DA VELHA****\n")
+print("Desafie o seu colega no jogo da velha.\n")
+
+print("Regras:")
+print("a) O primeiro jogador participará com a letra X e o segundo com a letra O.")
+print("b) os numeros de 1 a 9 representam os espaços que estão livres.")
+print("c) Você só poderar escolher as posições livres.")
+print("d) O vencedor será o primeiro jogador a preencher uma linha, uma coluna ou uma diagonal.")
+
+# Crie a Matriz do jogo
+matriz = criaMatriz()
+
+#define o jogador inicial 
+jogador = "X"
+c = 0
+
+while c < 9: #controla a quantidade maxima de jogadas.
+    apresentaMatriz(matriz)
+    print("Jogador ==>", jogador)
+    posicao = int(input("informe a posição desejada: "))
+
+    if posicaoOcupada (matriz, posicao):
+        print("Posição ocupada! Escolha outra posição.")
+        continue 
+    matriz = registraJogada(matriz, posicao, jogador)
+
+    if verificaGanhador(matriz, jogador):
+        apresentaMatriz(matriz)
+        print(f"Parabens, Jogador {jogador}! Você venceu!")
+        break
+    jogador = trocaJogador(jogador)
+    c += 1
+
+if c == 9 and not verificaGanhador (matriz, jogador):
+    apresentaMatriz(matriz)
+    print("Empate! O jogo terminou sem vencedores.")
+
+# Fim do programa
